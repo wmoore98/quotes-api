@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const cors = require('cors');
 
 const app = express();
 
@@ -22,11 +21,9 @@ const client = require('./db');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cors);
 
 app.use(function(req, res, next) {
-  // res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // update to match the domain you will make the request from
-  res.header('Access-Control-Allow-Origin', 'https://wmoore98.github.io'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Origin', process.env.CORS_ORIGIN); // update to match the domain you will make the request from - req.headers.origin
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
