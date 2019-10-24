@@ -5,22 +5,25 @@ const app = express();
 
 const client = require('./db');
 
-// const quotes = [
-//   {
-//     category: 'famous',
-//     author: 'Dr. Suess',
-//     quote:
-//       'You know you’re in love when you can’t fall asleep because reality is finally better than your dreams.'
-//   }
-// ];
+/*
+const quotes = [
+  // {
+  //   category: 'famous',
+  //   author: 'Dr. Suess',
+  //   quote:
+  //     'You know you’re in love when you can’t fall asleep because reality is finally better than your dreams.'
+  // }
+];
 
-// client
-//   .db()
-//   .collection('quotes')
-//   .insertMany(quotes);
+client
+  .db()
+  .collection('quotes')
+  .insertMany(quotes);
+*/
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('public'));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', process.env.CORS_ORIGIN); // update to match the domain you will make the request from - req.headers.origin
@@ -30,6 +33,8 @@ app.use(function(req, res, next) {
   );
   next();
 });
+
+app.use('/api', require('./router-api'));
 
 app.get('/', async (req, res) => {
   client
@@ -49,24 +54,19 @@ app.get('/', async (req, res) => {
 <body>
   <div class="container">
     <h1 class="display-4 text-center py-1">Quote API</h1>
-    <p>Instructions on use - GET /api/quotes</p>    
+    <p>Routes available:</p>
+    <ul>
+      <li>GET /api/quotes</li>
+      <li>POST /api/quotes/login</li>
+      <li>POST /api/quotes/register</li>
+    </ul>
+    <img src='test.jpg' alt='test image' />    
   <script>const quotes = ${JSON.stringify(quotes)}</script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- <script src="/browser.js"></script> -->
 </body>
 </html>
   `);
-    });
-});
-
-app.get('/api/quotes', async (req, res) => {
-  client
-    .db()
-    .collection('quotes')
-    .find()
-    .toArray((err, quotes) => {
-      const random = Math.floor(Math.random() * quotes.length);
-      res.json(quotes.slice(random, random + 1));
     });
 });
 
